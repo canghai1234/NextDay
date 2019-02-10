@@ -8,25 +8,17 @@ class DateTime : public QObject
     Q_OBJECT
 public:
     explicit DateTime(QObject *parent = nullptr);
-    void getToday();
-    QString getHttpHeaderDate();
+
+    QByteArray getToday();
+    QString getDay(QString date);
+    QString getMonthShort(QString date);
+    QString getWeek(QString date);
 signals:
 
 public slots:
 
 private:
-    struct dateimeInfo
-    {
-        int _year , _month , _day;
-        int _hour , _minute , _second , _millisecond;
-        int _week;
-        QString timeZone;
-        dateimeInfo()
-        {
-
-        }
-    };
-    int stringToInt(QString& string);
+    bool isDateValid(const QString& date);
 };
 
 #endif // DATETIME_H

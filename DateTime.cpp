@@ -7,9 +7,26 @@
 
 DateTime::DateTime(QObject *parent) : QObject(parent)
 {
-
+    
 }
 
+QByteArray DateTime::getToday()
+{
+    QByteArray res;
+    QDateTime currentDateTime = QDateTime::currentDateTime();
+    int year = currentDateTime.toString("yyyy").toInt();
+    int month = currentDateTime.toString("MM").toInt();
+    int day = currentDateTime.toString("dd").toInt();
+    if(year >= 2013 && (month > 0 && month < 13) && (day > 0 && day < 32))
+    {
+        res +=  currentDateTime.toString("yyyy").toUtf8()
+                + currentDateTime.toString("MM").toUtf8()
+                + currentDateTime.toString("dd").toUtf8();
+    }
+    return res;
+}
+
+/*
 void DateTime::getToday()
 {
     QDateTime currentDateTime = QDateTime::currentDateTime();
@@ -34,19 +51,48 @@ void DateTime::getToday()
     qDebug() <<year << month << day << hour << minute << second << millisecond;
     qDebug() << week << weekShort << s_month << s_monthShort << timezone;
 }
+*/
 
-QString DateTime::getHttpHeaderDate()
+
+QString DateTime::getDay(QString date)
 {
-    QDateTime currentDateTime = QDateTime::currentDateTimeUtc();
-    QString dataString = currentDateTime.toString("yyyy-MM-dd HH:mm:ss.zzz ");
-    QString timezone = currentDateTime.timeZone().displayName(QTimeZone::StandardTime,QTimeZone::ShortName,QLocale::UncodedLanguages);
-    QString res = dataString + timezone ;
-    qDebug() << "res" << res ;
-    return res;
+    if(isDateValid(date))
+        return date.right(2);
+    else
+        return "";
 }
 
-int DateTime::stringToInt(QString &string)
+QString DateTime::getMonthShort(QString date)
 {
-    int res = string.toInt();
-    return res;
+    if(isDateValid(date))
+    {
+        QDate dateObj = QDate::fromString(date,"yyyyMMdd");
+        QLocale eng = QLocale::English;
+        return eng.toString(dateObj,"MMM");
+    }
+    else
+        return "";
+}
+
+QString DateTime::getWeek(QString date)
+{
+    if(isDateValid(date))
+    {
+        QDate dateObj = QDate::fromString(date,"yyyyMMdd");
+        QLocale eng = QLocale::English;
+        return eng.toString(dateObj,"dddd");
+    }
+    else
+        return "";
+}
+
+bool DateTime::isDateValid(const QString &date)
+{
+    int dateSize = date.size();
+    if(dateSize != 8)
+        return false;
+    int year = date.left(4).toInt();
+    int month = date.mid(4,2).toInt();
+    int day = date.right(2).toInt();
+    return QDate::isValid(year,month,day);
 }

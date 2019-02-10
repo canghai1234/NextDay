@@ -14,7 +14,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += main.cpp \
     HttpRequest.cpp \
-    DateTime.cpp
+    DateTime.cpp \
+    ParsingJson.cpp \
+    RequestImage.cpp \
+    Backend.cpp \
+    QMLRegister.cpp \
+    NetworkData.cpp
 
 RESOURCES += qml.qrc
 
@@ -32,4 +37,10 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     HttpRequest.h \
     DateTime.h \
-    common.h
+    common.h \
+    ParsingJson.h \
+    RequestImage.h \
+    Backend.h \
+    Singleton.h \
+    QMLRegister.h \
+    NetworkData.h
