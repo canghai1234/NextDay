@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include "QMLRegister.h"
+#include <QFontDatabase>
 
 /*
  * 1. 获取当前设备信息
@@ -17,6 +18,14 @@ int main(int argc, char *argv[])
 #endif
 
     QGuiApplication app(argc, argv);
+
+//    //设置字体,并将字体文件打包进apk
+//    int avenirLightID = QFontDatabase::addApplicationFont(":/font/Avenir Next Ultra Light.ttf");
+//    //将字体Id传给applicationFontFamilies,得到一个QStringList,其中的第一个元素为新添加字体的family
+//    QString avenirLight = QFontDatabase::applicationFontFamilies(avenirLightID).at(0);
+//    QFont font(avenirLight);
+//    QGuiApplication::setFont(font);
+
 
     QMLRegister::getSingleton()->registerToQML();
 

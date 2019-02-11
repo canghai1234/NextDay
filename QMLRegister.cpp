@@ -3,6 +3,6 @@
 
 void QMLRegister::registerToQML()
 {
-    Backend::getSingleton()->init();
+    Backend::getSingleton()->initNetworkModel();
     qmlRegisterSingletonType<Backend>("NextDay",0,1,"Backend",backendProvider);
 }

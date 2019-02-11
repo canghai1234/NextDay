@@ -12,7 +12,7 @@ void Backend::requestSource(QByteArray date)
     _http->requestSource(date);
 }
 
-void Backend::init()
+void Backend::initNetworkModel()
 {
     qRegisterMetaType<NetworkData>("NetworkData");
     _http = new HttpRequest;
@@ -25,14 +25,14 @@ void Backend::init()
 void Backend::slotP_parsingJsonOK(NetworkData &data)
 {
     _lastSource = data;
-    qDebug() << "data.image_big" << data.image_big << "\n"
-             << "data.image_big2x" << data.image_big2x << "\n"
-             << "data.image_big568h2x" << data.image_big568h2x << "\n"
-             << "data.image_big568h3x" << data.image_big568h3x << "\n"
-             << "data.image_iphoneX" << data.image_iphoneX << "\n"
-             << "data.image_small" << data.image_small << "\n"
-             << "data.image_small2x" << data.image_small2x << "\n"
-             << "data.image_small568h2x" << data.image_small568h2x;
+//    qDebug() << "data.image_big" << data.image_big << "\n"
+//             << "data.image_big2x" << data.image_big2x << "\n"
+//             << "data.image_big568h2x" << data.image_big568h2x << "\n"
+//             << "data.image_big568h3x" << data.image_big568h3x << "\n"
+//             << "data.image_iphoneX" << data.image_iphoneX << "\n"
+//             << "data.image_small" << data.image_small << "\n"
+//             << "data.image_small2x" << data.image_small2x << "\n"
+//             << "data.image_small568h2x" << data.image_small568h2x;
     emit sig_requestSourceSucceed();
 }
 

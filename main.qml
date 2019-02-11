@@ -9,6 +9,11 @@ Window {
     width: 405
     height: 720
     title: qsTr("NextDay")
+
+    FontLoader { id: avenirLight; source: "qrc:/font/Avenir Next Ultra Light.ttf" }
+    FontLoader { id: avenirRegular; source: "qrc:/font/AvenirNextW01ThinRegular.ttf" }
+    FontLoader { id: sourceHanSans; source: "qrc:/font/SourceHanSansCN-Light.ttf" }
+
     Rectangle
     {
         id: rootRect
@@ -30,6 +35,7 @@ Window {
             anchors.bottomMargin: 3
             anchors.left: rootRect.left
             anchors.leftMargin: 24
+            font.family: avenirLight.name
         }
 
         Text {
@@ -40,6 +46,18 @@ Window {
             anchors.bottomMargin: 84
             anchors.left: rootRect.left
             anchors.leftMargin: 24
+            font.family: avenirRegular.name
+        }
+
+        Text {
+            id: event
+            font.pixelSize: 25
+            color: "#FFFFFF"
+            anchors.bottom: geoInfo.top
+            anchors.bottomMargin: 84
+            anchors.left: monthWeek.right
+            anchors.leftMargin: 0
+            font.family: sourceHanSans.name
         }
 
         Text {
@@ -50,6 +68,7 @@ Window {
             anchors.bottomMargin: 5
             anchors.left: rootRect.left
             anchors.leftMargin: 24
+            font.family: sourceHanSans.name
         }
 
         Rectangle
@@ -69,6 +88,7 @@ Window {
                     font.weight: Font.Bold
                     font.pixelSize: 16
                     color: "#FFFFFF"
+                    font.family: sourceHanSans.name
                 }
             }
             width: comment1.width + 4
@@ -91,6 +111,7 @@ Window {
                     id: comment2
                     font.pixelSize: 13
                     color: "#FFFFFF"
+                    font.family: sourceHanSans.name
                 }
             }
             width: comment2.width
@@ -109,12 +130,28 @@ Window {
             anchors.bottomMargin: 25
             anchors.right: rootRect.right
             anchors.rightMargin: 20
+            font.family: sourceHanSans.name
         }
     }
 
     Component.onCompleted:
     {
-        Backend.requestSource("20190204")
+        Backend.requestSource()
+    }
+
+    function toDBC(text)
+    {
+        var tmp = "";
+        for(var i=0; i < text.length; i++)
+        {
+            if(text.charCodeAt(i) === 32)
+                tmp = tmp + String.fromCharCode(12288);
+            else if(text.charCodeAt(i) < 127)
+                tmp = tmp + String.fromCharCode(text.charCodeAt(i) + 65248);
+            else
+                tmp = tmp + String.fromCharCode(text.charCodeAt(i));
+        }
+        return tmp;
     }
 
     Connections
@@ -124,14 +161,14 @@ Window {
         {
             image.source = Backend.getImageURL()
             day.text = Backend.getDay()
-            monthWeek.text = Backend.getWeek()
-            geoInfo.text = Backend.getGeoInfo()
+            monthWeek.text = toDBC(Backend.getWeek())
+            event.text = toDBC(Backend.getEvent())
+            geoInfo.text = toDBC(Backend.getGeoInfo())
             comment1RECT.color = Backend.getBackgroundColor()
             comment2RECT.color = Backend.getBackgroundColor()
-            comment1.text = Backend.getComment1()
-            comment2.text = Backend.getComment2()
+            comment1.text = toDBC(Backend.getComment1())
+            comment2.text = toDBC(Backend.getComment2())
             author.text = Backend.getAuthor()
-            console.log(monthWeek.text)
         }
     }
 }

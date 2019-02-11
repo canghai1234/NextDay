@@ -17,7 +17,8 @@ class Backend : public QObject, public Singleton<Backend>
 public:
     Q_INVOKABLE void requestSource();
     Q_INVOKABLE void requestSource(QByteArray date);
-    void init();
+    void initNetworkModel();
+
     Q_INVOKABLE QString getImageURL()
     {
         return _lastSource.image_big568h3x;
@@ -60,6 +61,12 @@ public:
         QString month = _date->getMonthShort(_lastSource.dateKey);
         QString res = month + "." + week;
         res = res.toUpper();
+        return res;
+    }
+
+    Q_INVOKABLE QString getEvent()
+    {
+        QString res = "";
         if(_lastSource.hasEvent)
             res += "," + _lastSource.event;
         return res;
