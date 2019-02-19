@@ -16,67 +16,26 @@ class Backend : public QObject, public Singleton<Backend>
     Q_OBJECT
 public:
     Q_INVOKABLE void requestSource();
+    Q_INVOKABLE QByteArray getTodayByte();
     Q_INVOKABLE void requestSource(QByteArray date);
+
     void initNetworkModel();
 
-    Q_INVOKABLE QString getImageURL()
-    {
-        return _lastSource.image_big568h3x;
-    }
+    //用来给 QML 获取图片以及文字等相关的资源
+    Q_INVOKABLE QString getImageURL();
+    Q_INVOKABLE QString getGeoInfo();
+    Q_INVOKABLE QString getBackgroundColor();
+    Q_INVOKABLE QString getComment1();
+    Q_INVOKABLE QString getComment2();
+    Q_INVOKABLE QString getDay();
+    Q_INVOKABLE QString getWeek();
+    Q_INVOKABLE QString getEvent();
+    Q_INVOKABLE QString getAuthor();
+    Q_INVOKABLE bool hasShort();
 
-    Q_INVOKABLE QString getGeoInfo()
-    {
-        return _lastSource.reverse;
-    }
+    Q_INVOKABLE double getDPI();
 
-    Q_INVOKABLE QString getBackgroundColor()
-    {
-        return _lastSource.background;
-    }
-
-    Q_INVOKABLE QString getComment1()
-    {
-        if(_lastSource.hasShort)
-            return _lastSource.shortText;
-        else
-            return _lastSource.comment1;
-    }
-
-    Q_INVOKABLE QString getComment2()
-    {
-        if(_lastSource.hasShort)
-            return "";
-        else
-            return _lastSource.comment2;
-    }
-
-    Q_INVOKABLE QString getDay()
-    {
-        return _date->getDay(_lastSource.dateKey);
-    }
-
-    Q_INVOKABLE QString getWeek()
-    {
-        QString week = _date->getWeek(_lastSource.dateKey);
-        QString month = _date->getMonthShort(_lastSource.dateKey);
-        QString res = month + "." + week;
-        res = res.toUpper();
-        return res;
-    }
-
-    Q_INVOKABLE QString getEvent()
-    {
-        QString res = "";
-        if(_lastSource.hasEvent)
-            res += "," + _lastSource.event;
-        return res;
-    }
-
-    Q_INVOKABLE QString getAuthor()
-    {
-        QString res = "@" + _lastSource.name;
-        return res;
-    }
+    Q_INVOKABLE void setCurrentShowDate(const QByteArray &currentShowDate);
 
 signals:
     void sig_requestSourceSucceed();
@@ -88,6 +47,8 @@ private:
     ParsingJson* _parJson;
     DateTime* _date;
     NetworkData _lastSource;
+
+    QByteArray _currentShowDate;
 };
 
 #endif // BACKEND_H
