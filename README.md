@@ -1,5 +1,5 @@
 # NextDay
-NextDay 非官方安卓客户端， 使用 Qt  for Android 开发
+NextDay 非官方安卓客户端， 使用 Qt  for Android 开发。 **目前还未实现全部功能**
 
 ## 安装
 下载 apk 文件夹下的 apk 文件，安装即可。点击下载：[NextDay](https://github.com/canghai1234/NextDay/blob/master/apk/NextDay.apk?raw=true)
