@@ -1,2 +1,0 @@
-The files of this folder are part of https://github.com/imtoby/CppModelForQMLExample
-

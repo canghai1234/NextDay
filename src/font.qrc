@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>font/Avenir Next Ultra Light.ttf</file>
+        <file>font/AvenirNextW01ThinRegular.ttf</file>
+        <file>font/SourceHanSansCN-Light.ttf</file>
+    </qresource>
+</RCC>
