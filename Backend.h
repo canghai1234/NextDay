@@ -9,17 +9,30 @@
 #include "DateTime.h"
 #include "NetworkData.h"
 
+
+#include "DateModel/ModelManager.h"
+
 #include <QDebug>
 
 class Backend : public QObject, public Singleton<Backend>
 {
     Q_OBJECT
 public:
+
+    void init();
+    ModelManager* getTodayListManage()
+    {
+        return _todayModelManage;
+    }
+
+
+
+    Q_INVOKABLE void qmlRequestYesterday();
+    Q_INVOKABLE void qmlRequestTomorrow();
+
     Q_INVOKABLE void requestSource();
     Q_INVOKABLE QByteArray getTodayByte();
     Q_INVOKABLE void requestSource(QByteArray date);
-
-    void initNetworkModel();
 
     //用来给 QML 获取图片以及文字等相关的资源
     Q_INVOKABLE QString getImageURL();
@@ -39,7 +52,7 @@ public:
 
 signals:
     void sig_requestSourceSucceed();
-
+    QList<QVariant> todayListChanged();
 private slots:
     void slotP_parsingJsonOK(NetworkData& data);
 private:
@@ -47,8 +60,14 @@ private:
     ParsingJson* _parJson;
     DateTime* _date;
     NetworkData _lastSource;
+    ModelManager* _todayModelManage;
+    ModelManager* _historyModelManage;
 
     QByteArray _currentShowDate;
+
+    bool _isHistoryModel;
+    void initNetworkModel();
+
 };
 
 #endif // BACKEND_H

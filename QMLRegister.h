@@ -10,13 +10,15 @@ class QMLRegister : public QObject , public Singleton<QMLRegister>
 {
     Q_OBJECT
 public:
-    static void registerToQML();
+    void registerToQML();
 signals:
 
 
 protected:
     static QObject* backendProvider(QQmlEngine *, QJSEngine *){return Backend::getSingleton();}
-public slots:
+
+private:
+    QQmlApplicationEngine *engine;
 };
 
 #endif // QMLREGISTER_H

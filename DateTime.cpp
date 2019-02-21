@@ -26,25 +26,25 @@ QByteArray DateTime::getToday()
     return res;
 }
 
-QByteArray DateTime::getYesterday(QString date)
+QByteArray DateTime::getYesterday(QString date, int day)
 {
     QByteArray res;
     if(isDateValid(date))
     {
         QDate dateObj = QDate::fromString(date,"yyyyMMdd");
-        QDate yesterday = dateObj.addDays(-1);
+        QDate yesterday = dateObj.addDays(-1 * day);
         res = yesterday.toString("yyyyMMdd").toUtf8();
     }
     return res;
 }
 
-QByteArray DateTime::getTomorrow(QString date)
+QByteArray DateTime::getTomorrow(QString date,int day)
 {
     QByteArray res;
     if(isDateValid(date))
     {
         QDate dateObj = QDate::fromString(date,"yyyyMMdd");
-        QDate yesterday = dateObj.addDays(1);
+        QDate yesterday = dateObj.addDays(day);
         res = yesterday.toString("yyyyMMdd").toUtf8();
     }
     return res;

@@ -10,8 +10,8 @@ public:
     explicit DateTime(QObject *parent = nullptr);
 
     QByteArray getToday();
-    QByteArray getYesterday(QString date);
-    QByteArray getTomorrow(QString date);
+    QByteArray getYesterday(QString date,int day = 1);
+    QByteArray getTomorrow(QString date,int day = 1);
 
     QString getDay(QString date);
     QString getMonthShort(QString date);

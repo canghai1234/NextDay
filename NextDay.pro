@@ -25,7 +25,10 @@ SOURCES += main.cpp \
     RequestImage.cpp \
     Backend.cpp \
     QMLRegister.cpp \
-    NetworkData.cpp
+    NetworkData.cpp \
+    DateModel/DateModel.cpp \
+    DateModel/DateItem.cpp \
+    DateModel/ModelManager.cpp
 
 RESOURCES += qml.qrc \
     font.qrc
@@ -50,7 +53,11 @@ HEADERS += \
     Backend.h \
     Singleton.h \
     QMLRegister.h \
-    NetworkData.h
+    NetworkData.h \
+    DateModel/DateModel.h \
+    DateModel/DateItem.h \
+    DateModel/config.h \
+    DateModel/ModelManager.h
 
 DISTFILES += \
     android/AndroidManifest.xml \
