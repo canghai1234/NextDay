@@ -1,14 +1,44 @@
 import QtQuick 2.10
-import QtQuick.Controls 2.2
-import QtQuick.Window 2.10
+import NextDay 0.1
+//import QtQuick.Window 2.3
+//import QtQuick.Controls 2.2
 
-Rectangle
+Item
 {
     id: rootRect
-    anchors.fill: parent
 
+    anchors.fill: parent
     width: 608
     height: 1080
+
+    property alias comment1RECTVisible: comment1RECT.visible
+    property alias comment2RECTVisible: comment2RECT.visible
+
+    //Image
+    property alias imageSource: image.source
+
+    //Font
+    property alias dayFontfamily: day.font.family
+    property alias monthWeekFontfamily: monthWeek.font.family
+    property alias eventFontfamily: event.font.family
+    property alias geoInfoFontfamily: geoInfo.font.family
+    property alias comment1Fontfamily: comment1.font.family
+    property alias comment2Fontfamily: comment2.font.family
+    property alias authorFontfamily: author.font.family
+
+    //Color
+    property alias comment1RECTColor: comment1RECT.color
+    property alias comment2RECTColor: comment2RECT.color
+
+    //text
+    property alias dayText: day.text
+    property alias monthWeekText: monthWeek.text
+    property alias eventText: event.text
+    property alias geoInfoText: geoInfo.text
+    property alias comment1Text: comment1.text
+    property alias comment2Text: comment2.text
+    property alias authorText: author.text
+    property alias textScale: rootRect.fontScale
 
     //距离比例
     property double dayScale: 0.37 //日期文字到底部的距离比例
@@ -22,83 +52,12 @@ Rectangle
     property double rightOffset: 0.05
 
     //文本大小
-    property double daytTextSize: 126.5
-    property double monthWeekTextSize: 25
-    property double geoTextSize: 16
-    property double commentTextSize: 18
-    property double authorTextSize: 16
-
-    function setDayFont(font)
-    {
-        day.font.family = font
-    }
-
-    function setWeekFont(font)
-    {
-        monthWeek.font.family = font
-    }
-
-    function setChineseFont(font)
-    {
-        event.font.family = font
-        geoInfo.font.family = font
-        comment1.font.family = font
-        comment2.font.family = font
-        author.font.family = font
-    }
-
-    function setImage(imagePath)
-    {
-        image.source = imagePath
-    }
-
-    function setDayText(text)
-    {
-        day.text = text
-    }
-
-    function setMonthWeekText(text)
-    {
-        monthWeek.text = text
-    }
-
-    function setEventText(text)
-    {
-        event.text = text
-    }
-
-    function setGeoInfoText(text)
-    {
-        geoInfo.text = text
-    }
-
-    function setComment1Text(text)
-    {
-        comment1.text = text
-    }
-
-    function setComment2Text(text)
-    {
-        comment2.text = text
-    }
-
-    function setAuthorText(text)
-    {
-        author.text = text
-    }
-
-    function setComment1Color(color)
-    {
-        comment1RECT.color = color
-    }
-
-    function setComment2Color(color)
-    {
-        comment2RECT.color = color
-        comment2RECT.visible = true
-    }
-
-
+    property double fontScale: 1.0
+    property double daytTextSize: 110 * fontScale
+    property double monthWeekTextSize: 22 * fontScale
+    property double geoTextSize: 13.9 * fontScale
+    property double commentTextSize: 15.66 * fontScale
+    property double authorTextSize: 13.9 * fontScale
 
     Image {
         id: image
@@ -137,7 +96,6 @@ Rectangle
                 font.bold: true
                 color: "#FFFFFF"
                 anchors.bottom: parent.bottom
-                font.family: avenirRegular.name
                 lineHeightMode: Text.FixedHeight
                 lineHeight: font.pixelSize
             }
@@ -167,8 +125,7 @@ Rectangle
         style: Text.Raised
         styleColor: "#000000"
         anchors.bottom: rootRect.bottom
-        anchors.bottomMargin: root.height * rootRect.geoInfotScale
-        font.family: sourceHanSans.name
+        anchors.bottomMargin: rootRect.height * rootRect.geoInfotScale
         lineHeightMode: Text.FixedHeight
         lineHeight: font.pixelSize
         anchors.left: rootRect.left
@@ -197,6 +154,7 @@ Rectangle
         anchors.bottomMargin: rootRect.height * rootRect.comment1Scale
         anchors.left: rootRect.left
         anchors.leftMargin: rootRect.width * rootRect.leftOffset -(comment1.font.pixelSize / 6)
+        visible: false
     }
 
     Rectangle
@@ -223,7 +181,7 @@ Rectangle
         visible: false
     }
 
-    Label {
+    Text {
         id: author
         font.weight: Font.ExtraLight
         font.pointSize: rootRect.authorTextSize
@@ -232,9 +190,8 @@ Rectangle
         lineHeight: font.pixelSize
 
         anchors.bottom: rootRect.bottom
-        anchors.bottomMargin: root.height * rootRect.authortScale
+        anchors.bottomMargin: rootRect.height * rootRect.authortScale
         anchors.right: rootRect.right
         anchors.rightMargin: rootRect.width * rootRect.rightOffset
     }
 }
-

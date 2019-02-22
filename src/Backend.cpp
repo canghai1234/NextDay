@@ -19,7 +19,8 @@ void Backend::qmlRequestYesterday()
     {
         _todayModelManage->append(_date->getYesterday(_currentShowDate,2));
     }
-//    qDebug() << _todayModelManage->dateModel()->count();
+
+//    qDebug() << _todayModelManage->dateModel()->rowCount(nullptr);
     requestSource(yesterday);
 }
 
@@ -62,6 +63,7 @@ void Backend::initNetworkModel()
     _todayModelManage = new ModelManager(this);
     _todayModelManage->initData();
     _historyModelManage = new ModelManager;
+    _historyModelManage->initData();
 
     QObject::connect(_http,SIGNAL(sig_recvApiData(QByteArray)),_parJson,SLOT(slot_parsingSource(QByteArray)),Qt::UniqueConnection);
     QObject::connect(_parJson,SIGNAL(sig_parsingOK(NetworkData&)),this,SLOT(slotP_parsingJsonOK(NetworkData&)),Qt::UniqueConnection);
@@ -122,7 +124,9 @@ QString Backend::getEvent()
 
 QString Backend::getAuthor()
 {
-    QString res = "@" + _lastSource.name;
+    QString res = "";
+    if(_lastSource.name.size() > 0)
+        res = "@" + _lastSource.name;
     return res;
 }
 
@@ -131,9 +135,15 @@ bool Backend::hasShort()
     return _lastSource.hasShort;
 }
 
-double Backend::getDPI()
+double Backend::getFontScale()
 {
-    return QGuiApplication::primaryScreen()->logicalDotsPerInch();
+#if defined(Q_OS_ANDROID)
+    double width = QGuiApplication::primaryScreen()->physicalSize().width();
+#elif defined(Q_OS_WIN)
+    double width = 71.0;
+#endif
+    double res = width / 71.0;
+    return res;
 }
 
 void Backend::slotP_parsingJsonOK(NetworkData &data)
@@ -156,6 +166,5 @@ void Backend::setCurrentShowDate(const QByteArray &currentShowDate)
 {
     _isHistoryModel = false;
     _currentShowDate = currentShowDate;
-    qDebug() << _currentShowDate;
 }
 

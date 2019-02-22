@@ -46,7 +46,7 @@ public:
     Q_INVOKABLE QString getAuthor();
     Q_INVOKABLE bool hasShort();
 
-    Q_INVOKABLE double getDPI();
+    Q_INVOKABLE double getFontScale();
 
     Q_INVOKABLE void setCurrentShowDate(const QByteArray &currentShowDate);
 

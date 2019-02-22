@@ -1,7 +1,6 @@
 import QtQuick 2.10
 import QtQuick.Window 2.10
 import NextDay 0.1
-//import DateModel 1.0
 import QtQuick.Controls 2.2
 
 import "./qml"
@@ -16,6 +15,8 @@ Window {
     FontLoader { id: avenirLight; source: "qrc:/font/Avenir Next Ultra Light.ttf" }
     FontLoader { id: avenirRegular; source: "qrc:/font/AvenirNextW01ThinRegular.ttf" }
     FontLoader { id: sourceHanSans; source: "qrc:/font/SourceHanSansCN-Light.ttf" }
+
+    property double fontScale: 1.0
 
     ListView {
         id:view
@@ -50,7 +51,6 @@ Window {
                 console.log("ListView currentIndex = lastIndex, value: " + currentIndex)
             }
             lastIndex = currentIndex
-//            console.log("currentIndex " + currentIndex +"lastIndex " + lastIndex)
         }
     }
 
@@ -75,6 +75,7 @@ Window {
                 comment1Fontfamily: sourceHanSans.name
                 comment2Fontfamily:sourceHanSans.name
                 authorFontfamily: sourceHanSans.name
+                textScale: root.fontScale
             }
 
             Connections
@@ -107,10 +108,10 @@ Window {
 
     Component.onCompleted:
     {
+        root.fontScale = Backend.getFontScale()
         view.currentIndex = 0;
         view.positionViewAtBeginning();
 
         Backend.requestSource();
-//        console.log("main load completed")
     }
 }

@@ -30,9 +30,6 @@ SOURCES += main.cpp \
     DateModel/DateItem.cpp \
     DateModel/ModelManager.cpp
 
-RESOURCES += qml.qrc \
-    font.qrc
-
 # Additional import path used to resolve QML modules in Qt Creator's code model
 #QML_IMPORT_PATH =
 
@@ -57,7 +54,11 @@ HEADERS += \
     DateModel/DateModel.h \
     DateModel/DateItem.h \
     DateModel/config.h \
-    DateModel/ModelManager.h
+    DateModel/ModelManager.h \
+    apikey.h
+
+RESOURCES += qml.qrc \
+    font.qrc
 
 DISTFILES += \
     android/AndroidManifest.xml \
