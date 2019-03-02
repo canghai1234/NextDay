@@ -21,8 +21,6 @@ Window {
     ListView {
         id:view
 
-        property int lastIndex: 0
-
         anchors.fill: parent
         anchors.margins: 0
         model: todayModelManage.dateModel()
@@ -35,22 +33,7 @@ Window {
 
         onCurrentIndexChanged:
         {
-            if(lastIndex > currentIndex)
-            {
-                //显示右边的 item 请求下一天
-                Backend.qmlRequestTomorrow()
-            }
-            else if(lastIndex < currentIndex)
-            {
-                //显示左边的 item 请求前一天
-                Backend.qmlRequestYesterday()
-            }
-                else
-            {
-                //currentIndex  与 lastIndex 相等
-                console.log("ListView currentIndex = lastIndex, value: " + currentIndex)
-            }
-            lastIndex = currentIndex
+            Backend.qmlIndexChanged(currentIndex)
         }
     }
 
@@ -76,32 +59,20 @@ Window {
                 comment2Fontfamily:sourceHanSans.name
                 authorFontfamily: sourceHanSans.name
                 textScale: root.fontScale
-            }
 
-            Connections
-            {
-                target: Backend
-                onSig_requestSourceSucceed:
-                {
-                    if(dayRect.ListView.isCurrentItem)
-                    {
-                        day.imageSource = Backend.getImageURL()
-                        day.dayText =  Backend.getDay()
-                        day.monthWeekText = Backend.getWeek()
-                        day.eventText = Backend.getEvent()
-                        day.geoInfoText = Backend.getGeoInfo()
-                        day.comment1Text = Backend.getComment1()
-                        day.comment2Text = Backend.getComment2()
-                        day.authorText = Backend.getAuthor()
-                        day.comment1RECTColor = Backend.getBackgroundColor()
-                        day.comment1RECTVisible = true
-                        if(!Backend.hasShort())
-                        {
-                            day.comment2RECTColor = Backend.getBackgroundColor()
-                            day.comment2RECTVisible = true
-                        }
-                    }
-                }
+                imageSource: model.modelData.imageURL
+                dayText: model.modelData.day
+                monthWeekText: model.modelData.week
+                eventText: model.modelData.event
+                geoInfoText: model.modelData.geoInfo
+                comment1Text: model.modelData.comment1
+                comment2Text: model.modelData.comment2
+                authorText: model.modelData.author
+                comment1RECTColor: model.modelData.backgroundColor
+                comment2RECTColor: model.modelData.backgroundColor
+                comment1RECTVisible: true
+                comment2RECTVisible: !model.modelData.hasShort
+
             }
         }
     }
@@ -109,9 +80,6 @@ Window {
     Component.onCompleted:
     {
         root.fontScale = Backend.getFontScale()
-        view.currentIndex = 0;
-        view.positionViewAtBeginning();
-
-        Backend.requestSource();
+        view.currentIndex = 0
     }
 }

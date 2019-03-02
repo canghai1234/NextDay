@@ -16,6 +16,8 @@ public:
     QString getDay(QString date);
     QString getMonthShort(QString date);
     QString getWeek(QString date);
+
+    qint64 daysTo(QByteArray date,QByteArray refDate);
 signals:
 
 public slots:

@@ -9,7 +9,7 @@
  ***************************************************************************/
 #include "ModelManager.h"
 #include <QThread>
-
+#include <QDebug>
 #include "DateItem.h"
 
 class ModelManagerPrivate
@@ -59,20 +59,76 @@ DateModel *ModelManager::dateModel()
     return d->dateModel;
 }
 
-void ModelManager::append(QByteArray date)
+void ModelManager::push_back(dataUI date)
 {
     Q_D(ModelManager);
     DateItem* newDateItem = new DateItem(this);
-    newDateItem->setDate(date);
-    d->dateModel->append(newDateItem);
+    newDateItem->setData(date);
+    d->dateModel->push_back(newDateItem);
 }
 
-void ModelManager::insert(QByteArray date, int index)
+void ModelManager::push_front(dataUI date)
 {
     Q_D(ModelManager);
     DateItem* newDateItem = new DateItem(this);
-    newDateItem->setDate(date);
-    d->dateModel->insert(index,newDateItem);
+    newDateItem->setData(date);
+    d->dateModel->push_front(newDateItem);
+}
+
+QByteArray ModelManager::lastDate()
+{
+    Q_D(ModelManager);
+    DateItem* tempItem = static_cast<DateItem*>(d->dateModel->getLast());
+    if(nullptr != tempItem)
+        return tempItem->dateKey();
+    return "";
+}
+
+QByteArray ModelManager::firstDate()
+{
+    Q_D(ModelManager);
+    DateItem* tempItem = static_cast<DateItem*>(d->dateModel->getFirst());
+    if(nullptr != tempItem)
+        return tempItem->dateKey();
+    return "";
+}
+
+QByteArray ModelManager::dateKey(int index)
+{
+    Q_D(ModelManager);
+    DateItem* tempItem = static_cast<DateItem*>(d->dateModel->get(index));
+    if(nullptr != tempItem)
+        return tempItem->dateKey();
+    return "";
+}
+
+void ModelManager::setData(dataUI data, qint64 index)
+{
+    Q_D(ModelManager);
+    DateItem* tempItem;
+    tempItem = static_cast<DateItem*>(d->dateModel->get(index));
+    if(nullptr != tempItem)
+    {
+        if(data.dateKey == tempItem->dateKey())
+        {
+            DateItem* newDateItem = new DateItem(this);
+            newDateItem->setData(data);
+            d->dateModel->replace(index,newDateItem);
+            return;
+        }
+    }
+}
+
+bool ModelManager::dataInited(int index)
+{
+    Q_D(ModelManager);
+    DateItem* tempItem;
+    tempItem = static_cast<DateItem*>(d->dateModel->get(index));
+    if(nullptr != tempItem)
+    {
+        return tempItem->dataInited();
+    }
+    return false;
 }
 
 void ModelManagerPrivate::init()

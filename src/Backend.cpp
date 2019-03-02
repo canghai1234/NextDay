@@ -4,54 +4,16 @@
 #include <QGuiApplication>
 #include <QScreen>
 #include <QFontMetrics>
-
-void Backend::qmlRequestYesterday()
-{
-    QByteArray yesterday = _date->getYesterday(_currentShowDate);
-
-    if(_isHistoryModel)
-    {
-        QByteArray yesterday = _date->getYesterday(_currentShowDate);
-//        if(_histryList.indexOf(yesterday,0) < 0)
-//            _histryList.append(yesterday);
-    }
-    else
-    {
-        _todayModelManage->append(_date->getYesterday(_currentShowDate,2));
-    }
-
-//    qDebug() << _todayModelManage->dateModel()->rowCount(nullptr);
-    requestSource(yesterday);
-}
-
-void Backend::qmlRequestTomorrow()
-{
-    if(_isHistoryModel)
-    {
-        QByteArray tomorrow = _date->getTomorrow(_currentShowDate);
-//        if(_histryList.indexOf(tomorrow,0) < 0)
-//            _histryList.insert(0,tomorrow);
-    }
-    else
-    {
-        QByteArray tomorrow = _date->getYesterday(_currentShowDate);
-    }
-    requestSource(_date->getTomorrow(_currentShowDate));
-}
-
-void Backend::requestSource()
-{
-    _http->requestSource(_date->getToday());
-}
-
-QByteArray Backend::getTodayByte()
-{
-    return _date->getToday();
-}
+#define PRELOAD_DAYS 7
 
 void Backend::requestSource(QByteArray date)
 {
     _http->requestSource(date);
+}
+
+void Backend::requestSource(QByteArray date1, QByteArray date2)
+{
+    _http->requestSource(date1,date2);
 }
 
 void Backend::initNetworkModel()
@@ -69,72 +31,6 @@ void Backend::initNetworkModel()
     QObject::connect(_parJson,SIGNAL(sig_parsingOK(NetworkData&)),this,SLOT(slotP_parsingJsonOK(NetworkData&)),Qt::UniqueConnection);
 }
 
-QString Backend::getImageURL()
-{
-    return _lastSource.image_big568h3x;
-}
-
-QString Backend::getGeoInfo()
-{
-    return _lastSource.reverse;
-}
-
-QString Backend::getBackgroundColor()
-{
-    return _lastSource.background;
-}
-
-QString Backend::getComment1()
-{
-    if(_lastSource.hasShort)
-        return _lastSource.shortText;
-    else
-        return _lastSource.comment1;
-}
-
-QString Backend::getComment2()
-{
-    if(_lastSource.hasShort)
-        return "";
-    else
-        return _lastSource.comment2;
-}
-
-QString Backend::getDay()
-{
-    return _date->getDay(_lastSource.dateKey);
-}
-
-QString Backend::getWeek()
-{
-    QString week = _date->getWeek(_lastSource.dateKey);
-    QString month = _date->getMonthShort(_lastSource.dateKey);
-    QString res = month + ". " + week;
-    res = res.toUpper();
-    return res;
-}
-
-QString Backend::getEvent()
-{
-    QString res = "";
-    if(_lastSource.hasEvent)
-        res += ", " + _lastSource.event;
-    return res;
-}
-
-QString Backend::getAuthor()
-{
-    QString res = "";
-    if(_lastSource.name.size() > 0)
-        res = "@" + _lastSource.name;
-    return res;
-}
-
-bool Backend::hasShort()
-{
-    return _lastSource.hasShort;
-}
-
 double Backend::getFontScale()
 {
 #if defined(Q_OS_ANDROID)
@@ -148,23 +44,82 @@ double Backend::getFontScale()
 
 void Backend::slotP_parsingJsonOK(NetworkData &data)
 {
-    _lastSource = data;
-    _currentShowDate = _lastSource.dateKey.toUtf8();
-    emit sig_requestSourceSucceed();
+    dataUI newData;
+    newData.dataInited = true;
+    newData.dateKey = data.dateKey;
+    newData.day = _date->getDay(data.dateKey);
+
+    QString week = _date->getWeek(data.dateKey);
+    QString month = _date->getMonthShort(data.dateKey);
+    newData.week = QString(month + ". " + week).toUpper();
+
+    if(data.hasEvent)
+        newData.event = ", " + data.event;
+    newData.geoInfo = data.reverse;
+
+    newData.hasShort = data.hasShort;
+    if(data.hasShort)
+        newData.comment1 = data.shortText;
+    else
+    {
+        newData.comment1 = data.comment1;
+        newData.comment2 = data.comment2;
+    }
+    newData.backgroundColor = data.background;
+
+    newData.imageURL = data.image_big568h3x;
+    if(data.hasAuthorInfo)
+        newData.author = "@" + data.name;
+
+    QByteArray firstDateKey = _todayModelManage->firstDate();
+    qint64 dayToFirst = _date->daysTo( data.dateKey,firstDateKey);
+    _todayModelManage->setData(newData,dayToFirst);
 }
 
 void Backend::init()
 {
     initNetworkModel();
     _isHistoryModel = false;
-    _currentShowDate = getTodayByte();
-    _todayModelManage->append(_currentShowDate);
-    _todayModelManage->append(_date->getYesterday(_currentShowDate));
 }
 
-void Backend::setCurrentShowDate(const QByteArray &currentShowDate)
+void Backend::qmlIndexChanged(int currentIndex)
 {
-    _isHistoryModel = false;
-    _currentShowDate = currentShowDate;
+    int modelCount = _todayModelManage->dateModel()->getCount();
+    if(0 == modelCount)
+    {
+        dataUI todayData;
+        todayData.dataInited = false;
+        todayData.dateKey = _date->getToday();
+        _todayModelManage->push_back(todayData);
+        modelCount = _todayModelManage->dateModel()->getCount();
+    }
+
+    if(currentIndex == (modelCount - 1))
+    {
+        QByteArray dateKey = _todayModelManage->lastDate();
+        QByteArray firstDate ,lastDate;
+        for(int day = 0; day < PRELOAD_DAYS; ++ day)
+        {
+            dataUI yesterdayData;
+            yesterdayData.dataInited = false;
+            yesterdayData.dateKey = _date->getYesterday(dateKey,day+1);
+            _todayModelManage->push_back(yesterdayData);
+            if(0 == day)
+                firstDate = yesterdayData.dateKey;
+            else if((PRELOAD_DAYS -1) == day)
+                lastDate = yesterdayData.dateKey;
+        }
+        requestSource(lastDate,firstDate);
+    }
+
+    bool dataInited = _todayModelManage->dataInited(currentIndex);
+    if(!dataInited)
+    {
+        QByteArray day = _todayModelManage->dateKey(currentIndex);
+        if(day.size() > 0)
+            requestSource(day);
+    }
 }
+
+
 

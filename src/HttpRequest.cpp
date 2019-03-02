@@ -20,13 +20,25 @@ HttpRequest::HttpRequest(QObject *parent) : QObject(parent)
 
 void HttpRequest::requestSource(QByteArray date)
 {
+    requestSource(date,date);
+}
+
+void HttpRequest::requestSource(QByteArray date1, QByteArray date2)
+{
     //1. 验证 data 的有效性
-    QDate dateObj = QDate::fromString(QString(date),"yyyyMMdd");
+    QDate dateObj = QDate::fromString(QString(date1),"yyyyMMdd");
     if(!dateObj.isValid())
         return;
 
+    if(date1 != date2)
+    {
+        dateObj = QDate::fromString(QString(date2),"yyyyMMdd");
+        if(!dateObj.isValid())
+            return;
+    }
+
     //2. 构造 http url
-    QByteArray headerUrl = URL + QByteArray("?from=") + date + QByteArray("&to=") + date;
+    QByteArray headerUrl = URL + QByteArray("?from=") + date1 + QByteArray("&to=") + date2;
     QByteArray urlAddress = HOST + headerUrl;
     QUrl url(QString::fromStdString(urlAddress.toStdString()));
     request.setUrl(url);
@@ -68,6 +80,7 @@ void HttpRequest::slotP_reply(QNetworkReply *reply)
     if (reply->error() == QNetworkReply::NoError)
     {
         QByteArray answer = reply->readAll();
+//        qDebug() << answer;
         emit sig_recvApiData(answer);
     }
     else

@@ -196,6 +196,31 @@ QObject *DateModel::get(int index)
     return nullptr;
 }
 
+QObject *DateModel::getFirst()
+{
+    Q_D(DateModel);
+    if (d->objectList.size() > 0) {
+        d->mutex->lock();
+        QObject * object = d->objectList.at(0);
+        d->mutex->unlock();
+        return object;
+    }
+    return nullptr;
+}
+
+QObject *DateModel::getLast()
+{
+    Q_D(DateModel);
+    int size = d->objectList.size();
+    if (size > 0) {
+        d->mutex->lock();
+        QObject * object = d->objectList.at(size - 1);
+        d->mutex->unlock();
+        return object;
+    }
+    return nullptr;
+}
+
 QObjectList *DateModel::getAll()
 {
     Q_D(DateModel);
@@ -203,6 +228,12 @@ QObjectList *DateModel::getAll()
     QObjectList * objectList = &(d->objectList);
     d->mutex->unlock();
     return objectList;
+}
+
+int DateModel::getCount()
+{
+    C_D(DateModel);
+    return d->objectList.size();
 }
 
 

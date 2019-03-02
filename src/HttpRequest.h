@@ -10,6 +10,7 @@ class HttpRequest : public QObject
 public:
     explicit HttpRequest(QObject *parent = nullptr);
     void requestSource(QByteArray date);
+    void requestSource(QByteArray date1,QByteArray date2);
 signals:
     void sig_recvApiData(QByteArray data);
 

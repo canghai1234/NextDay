@@ -25,7 +25,6 @@ SOURCES += main.cpp \
     RequestImage.cpp \
     Backend.cpp \
     QMLRegister.cpp \
-    NetworkData.cpp \
     DateModel/DateModel.cpp \
     DateModel/DateItem.cpp \
     DateModel/ModelManager.cpp
@@ -50,7 +49,6 @@ HEADERS += \
     Backend.h \
     Singleton.h \
     QMLRegister.h \
-    NetworkData.h \
     DateModel/DateModel.h \
     DateModel/DateItem.h \
     DateModel/config.h \

@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include "common.h"
-#include "NetworkData.h"
 
 class ParsingJson : public QObject
 {

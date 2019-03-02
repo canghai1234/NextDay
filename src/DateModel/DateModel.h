@@ -41,8 +41,10 @@ public:
     void clear();
 
     QObject * get(int index);
+    QObject *getFirst();
+    QObject *getLast();
     QObjectList* getAll();
-
+    int getCount();
 private:
     QScopedPointer<DateModelPrivate> d_ptr;
     Q_DECLARE_PRIVATE(DateModel)

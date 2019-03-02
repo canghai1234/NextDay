@@ -14,6 +14,7 @@
 
 #include <QObject>
 #include "DateModel.h"
+#include "common.h"
 
 class ModelManagerPrivate;
 
@@ -27,11 +28,18 @@ public:
     Q_INVOKABLE void initData();
     Q_INVOKABLE DateModel* dateModel();
 
-    void append(QByteArray date);
-    void insert(QByteArray date,int index = 0);
+    void push_back(dataUI date);
+    void push_front(dataUI date);
+    QByteArray lastDate();
+    QByteArray firstDate();
+    QByteArray dateKey(int index);
+    void setData(dataUI data,qint64 index);
+    bool dataInited(int index);
 
 private:
     QScopedPointer<ModelManagerPrivate> d_ptr;
     Q_DECLARE_PRIVATE(ModelManager)
+
+
 };
 #endif // MODELMANAGER_H

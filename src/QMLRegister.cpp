@@ -15,12 +15,11 @@ void QMLRegister::registerToQML()
     engine = new QQmlApplicationEngine;
 
     qmlRegisterUncreatableType<DateModel, 1>("Next", 1, 0, "DateModel", "Cannot create DateModel");
-    engine->rootContext()->setContextProperty("todayModelManage", Backend::getSingleton()->getTodayListManage()/*->dateModel()*/);
+    engine->rootContext()->setContextProperty("todayModelManage", Backend::getSingleton()->getTodayListManage());
 
     engine->load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine->rootObjects().isEmpty())
     {
-        qDebug() << "exit -1";
         qApp->exit(-1);
     }
 }
