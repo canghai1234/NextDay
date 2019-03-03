@@ -10,8 +10,6 @@ void QMLRegister::registerToQML()
     qmlRegisterSingletonType<Backend>("NextDay",0,1,"Backend",backendProvider);
     Backend::getSingleton()->init();
 
-
-
     engine = new QQmlApplicationEngine;
 
     qmlRegisterUncreatableType<DateModel, 1>("Next", 1, 0, "DateModel", "Cannot create DateModel");

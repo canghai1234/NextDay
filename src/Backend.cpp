@@ -4,7 +4,7 @@
 #include <QGuiApplication>
 #include <QScreen>
 #include <QFontMetrics>
-#define PRELOAD_DAYS 7
+#define PRELOAD_DAYS 15
 
 void Backend::requestSource(QByteArray date)
 {
@@ -29,6 +29,8 @@ void Backend::initNetworkModel()
 
     QObject::connect(_http,SIGNAL(sig_recvApiData(QByteArray)),_parJson,SLOT(slot_parsingSource(QByteArray)),Qt::UniqueConnection);
     QObject::connect(_parJson,SIGNAL(sig_parsingOK(NetworkData&)),this,SLOT(slotP_parsingJsonOK(NetworkData&)),Qt::UniqueConnection);
+    QObject::connect(_todayModelManage,SIGNAL(sig_dataReceived(qint64)),this,SLOT(slotP_dataUpdated(qint64)),Qt::UniqueConnection);
+
 }
 
 double Backend::getFontScale()
@@ -71,19 +73,41 @@ void Backend::slotP_parsingJsonOK(NetworkData &data)
     if(data.hasAuthorInfo)
         newData.author = "@" + data.name;
 
+    newData.hasMusic = data.hasMusic;
+    newData.music_artist = data.music_artist;
+    newData.music_title = data.music_title;
+    newData.music_Url = data.music_Url;
+
     QByteArray firstDateKey = _todayModelManage->firstDate();
     qint64 dayToFirst = _date->daysTo( data.dateKey,firstDateKey);
     _todayModelManage->setData(newData,dayToFirst);
+}
+
+void Backend::slotP_dataUpdated(qint64 index)
+{
+    if(index == _currentIndex)
+    {
+        bool hasMusic = _todayModelManage->hasMusic(index);
+        QString musicTitle = _todayModelManage->musicTitle(index);
+        QString musicArtist = _todayModelManage->musicArtist(index);
+        QString musicURL = _todayModelManage->musicURL(index);
+        emit sig_hasMusic(hasMusic);
+        emit sig_musicURL(musicURL);
+        emit sig_musicTitle(musicTitle);
+        emit sig_musicArtist(musicArtist);
+    }
 }
 
 void Backend::init()
 {
     initNetworkModel();
     _isHistoryModel = false;
+    _currentIndex = 0;
 }
 
 void Backend::qmlIndexChanged(int currentIndex)
 {
+    _currentIndex = currentIndex;
     int modelCount = _todayModelManage->dateModel()->getCount();
     if(0 == modelCount)
     {
@@ -118,6 +142,17 @@ void Backend::qmlIndexChanged(int currentIndex)
         QByteArray day = _todayModelManage->dateKey(currentIndex);
         if(day.size() > 0)
             requestSource(day);
+    }
+    else
+    {
+        bool hasMusic = _todayModelManage->hasMusic(currentIndex);
+        QString musicTitle = _todayModelManage->musicTitle(currentIndex);
+        QString musicArtist = _todayModelManage->musicArtist(currentIndex);
+        QString musicURL = _todayModelManage->musicURL(currentIndex);
+        emit sig_hasMusic(hasMusic);
+        emit sig_musicURL(musicURL);
+        emit sig_musicTitle(musicTitle);
+        emit sig_musicArtist(musicArtist);
     }
 }
 

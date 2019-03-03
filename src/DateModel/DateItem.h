@@ -53,6 +53,10 @@ public:
     QString author() const;
     bool hasShort() const;
 
+    bool hasMusic() const;
+    QString musicArtist() const;
+    QString musicTitle() const;
+    QString musicUrl() const;
 
 signals:
     void imageURLChanged();

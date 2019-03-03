@@ -36,6 +36,14 @@ public:
     void setData(dataUI data,qint64 index);
     bool dataInited(int index);
 
+    bool hasMusic(int index);
+    QString musicTitle(int index);
+    QString musicArtist(int index);
+    QString musicURL(int index);
+
+signals:
+    void sig_dataReceived(qint64 index);
+
 private:
     QScopedPointer<ModelManagerPrivate> d_ptr;
     Q_DECLARE_PRIVATE(ModelManager)

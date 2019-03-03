@@ -20,6 +20,11 @@ struct dataUI
     QString author;
     QString imageURL;
 
+    bool hasMusic;
+    QString music_artist;
+    QString music_title;
+    QString music_Url;
+
     dataUI& operator =(dataUI& data)
     {
         dataInited = data.dataInited;
@@ -35,6 +40,12 @@ struct dataUI
         comment2 = data.comment2;
         author = data.author;
         imageURL = data.imageURL;
+
+        hasMusic = data.hasMusic;
+        music_artist = data.music_artist;
+        music_title = data.music_title;
+        music_Url = data.music_Url;
+
         return *this;
     }
     dataUI()
@@ -52,6 +63,11 @@ struct dataUI
         comment2 = "";
         author = "";
         imageURL = "";
+
+        hasMusic = false;
+        music_artist = "";
+        music_title = "";
+        music_Url = "";
     }
 };
 

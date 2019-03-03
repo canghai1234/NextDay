@@ -56,7 +56,8 @@ HEADERS += \
     apikey.h
 
 RESOURCES += qml.qrc \
-    font.qrc
+    font.qrc \
+    icon.qrc
 
 DISTFILES += \
     android/AndroidManifest.xml \

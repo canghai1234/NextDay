@@ -11,6 +11,7 @@ Window {
     width: 608
     height: 1080
     title: qsTr("NextDay")
+//    flags: Qt.FramelessWindowHint
 
     FontLoader { id: avenirLight; source: "qrc:/font/Avenir Next Ultra Light.ttf" }
     FontLoader { id: avenirRegular; source: "qrc:/font/AvenirNextW01ThinRegular.ttf" }
@@ -74,6 +75,57 @@ Window {
                 comment2RECTVisible: !model.modelData.hasShort
 
             }
+        }
+    }
+
+
+    Music
+    {
+        id: musicControl
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 0
+
+        anchors.left: parent.left
+        anchors.leftMargin: 0
+        anchors.right: parent.right
+        anchors.rightMargin: 0
+
+        height: root.height * 0.0634
+        textScale: root.fontScale
+        windowHeight: root.height
+
+        musicNameFont: sourceHanSans.name
+        musicArtistFont: sourceHanSans.name
+    }
+
+    Connections
+    {
+        target: Backend
+        onSig_hasMusic:
+        {
+            if(hasMusic)
+            {
+                musicControl.visible = true
+            }
+            else
+            {
+                if(musicControl.isMusicPlaying)
+                    musicControl.visible = true
+                else
+                    musicControl.visible = false
+            }
+        }
+        onSig_musicURL:
+        {
+            musicControl.setMusicURL(url)
+        }
+        onSig_musicTitle:
+        {
+            musicControl.setMusicTitle(title)
+        }
+        onSig_musicArtist:
+        {
+            musicControl.setMusicArtist(artist)
         }
     }
 

@@ -7,7 +7,6 @@
 class ParsingJson : public QObject
 {
     Q_OBJECT
-    void parse();
 public:
     explicit ParsingJson(QObject *parent = nullptr);
 

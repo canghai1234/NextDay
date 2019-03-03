@@ -114,6 +114,7 @@ void ModelManager::setData(dataUI data, qint64 index)
             DateItem* newDateItem = new DateItem(this);
             newDateItem->setData(data);
             d->dateModel->replace(index,newDateItem);
+            emit sig_dataReceived(index);
             return;
         }
     }
@@ -127,6 +128,50 @@ bool ModelManager::dataInited(int index)
     if(nullptr != tempItem)
     {
         return tempItem->dataInited();
+    }
+    return false;
+}
+
+QString ModelManager::musicTitle(int index)
+{
+    Q_D(ModelManager);
+    DateItem* tempItem = static_cast<DateItem*>(d->dateModel->get(index));
+    if(nullptr != tempItem)
+    {
+        return tempItem->musicTitle();
+    }
+    return "";
+}
+
+QString ModelManager::musicArtist(int index)
+{
+    Q_D(ModelManager);
+    DateItem* tempItem = static_cast<DateItem*>(d->dateModel->get(index));
+    if(nullptr != tempItem)
+    {
+        return tempItem->musicArtist();
+    }
+    return "";
+}
+
+QString ModelManager::musicURL(int index)
+{
+    Q_D(ModelManager);
+    DateItem* tempItem = static_cast<DateItem*>(d->dateModel->get(index));
+    if(nullptr != tempItem)
+    {
+        return tempItem->musicUrl();
+    }
+    return "";
+}
+
+bool ModelManager::hasMusic(int index)
+{
+    Q_D(ModelManager);
+    DateItem* tempItem = static_cast<DateItem*>(d->dateModel->get(index));
+    if(nullptr != tempItem)
+    {
+        return tempItem->hasMusic();
     }
     return false;
 }

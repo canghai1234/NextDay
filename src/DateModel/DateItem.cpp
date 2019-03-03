@@ -35,6 +35,11 @@ private:
     QString author;
     bool hasShort;
     bool dataInited;
+
+    bool hasMusic;
+    QString music_artist;
+    QString music_title;
+    QString music_Url;
 };
 
 DateItem::DateItem(QObject *parent) :
@@ -65,6 +70,11 @@ void DateItem::setData(dataUI &data)
     Q_D(DateItem);
     d->dateKey = data.dateKey;
     d->dataInited = data.dataInited;
+    d->hasMusic = data.hasMusic;
+    d->music_artist = data.music_artist;
+    d->music_title = data.music_title;
+    d->music_Url = data.music_Url;
+
     setDay(data.day);
     setWeek(data.week);
     setEvent(data.event);
@@ -94,6 +104,30 @@ bool DateItem::hasShort() const
 {
     C_D(DateItem);
     return d->hasShort;
+}
+
+bool DateItem::hasMusic() const
+{
+    C_D(DateItem);
+    return d->hasMusic;
+}
+
+QString DateItem::musicArtist() const
+{
+    C_D(DateItem);
+    return d->music_artist;
+}
+
+QString DateItem::musicTitle() const
+{
+    C_D(DateItem);
+    return d->music_title;
+}
+
+QString DateItem::musicUrl() const
+{
+    C_D(DateItem);
+    return d->music_Url;
 }
 
 void DateItem::setDay(const QString &day)
