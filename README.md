@@ -10,7 +10,7 @@ NextDay 非官方安卓客户端， 使用 Qt  for Android 开发。 **目前还
 # 安装
 下载 apk 文件夹下的 apk 文件，安装即可。点击下载：[NextDay](https://github.com/canghai1234/NextDay/blob/master/apk/NextDay.apk?raw=true)
 
-**提示**： 长按（3秒）底部音乐栏，进入设置页面。安卓包过大是因为为保证显示想过，将字体编译进了 apk 中。
+**提示**： 长按（3秒）底部音乐栏，进入设置页面。安卓包过大是因为为保证显示效果，将字体编译进了 apk 中。
 
 ## ToDo（按优先级排序）
 1. 读取安卓按键，使部分页面可以响应系统按键
