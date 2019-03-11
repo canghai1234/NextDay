@@ -35,6 +35,7 @@ public:
     QByteArray dateKey(int index);
     void setData(dataUI data,qint64 index);
     bool dataInited(int index);
+    QString imagePath(int index);
 
     bool hasMusic(int index);
     QString musicTitle(int index);

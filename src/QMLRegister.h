@@ -3,8 +3,8 @@
 
 #include <QObject>
 #include <QQmlApplicationEngine>
-#include "Singleton.h"
 #include "Backend.h"
+#include "NotificationDialog.h"
 
 class QMLRegister : public QObject , public Singleton<QMLRegister>
 {
@@ -16,6 +16,8 @@ signals:
 
 protected:
     static QObject* backendProvider(QQmlEngine *, QJSEngine *){return Backend::getSingleton();}
+
+    static QObject* notifyProvider(QQmlEngine *, QJSEngine *){return NotificationDialog::getSingleton();}
 
 private:
     QQmlApplicationEngine *engine;

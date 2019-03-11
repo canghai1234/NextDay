@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QNetworkAccessManager>
+#include <QNetworkReply>
 
 class HttpRequest : public QObject
 {
@@ -22,6 +23,8 @@ private:
     QNetworkRequest request;
 
     QByteArray getHttpHeaderDate();
+    QString getNetworkErrorString(QNetworkReply::NetworkError error);
+    QString getHttpErrorCodeString(int errorCode);
 };
 
 #endif // HTTPREQUEST_H

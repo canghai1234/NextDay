@@ -1,7 +1,13 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
-        <file>qml/MainRect.qml</file>
         <file>qml/Music.qml</file>
+        <file>qml/NextDayDialog.qml</file>
+        <file>qml/DaySource.qml</file>
+        <file>qml/MainRect.qml</file>
+        <file>qml/Settings.qml</file>
+        <file>qml/CustmButton.qml</file>
+        <file>qml/CustmSlider.qml</file>
+        <file>qml/About.qml</file>
     </qresource>
 </RCC>

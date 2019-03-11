@@ -27,7 +27,10 @@ SOURCES += main.cpp \
     QMLRegister.cpp \
     DateModel/DateModel.cpp \
     DateModel/DateItem.cpp \
-    DateModel/ModelManager.cpp
+    DateModel/ModelManager.cpp \
+    NotificationDialog.cpp \
+    ImageDownload.cpp \
+    Profile.cpp
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 #QML_IMPORT_PATH =
@@ -53,7 +56,10 @@ HEADERS += \
     DateModel/DateItem.h \
     DateModel/config.h \
     DateModel/ModelManager.h \
-    apikey.h
+    apikey.h \
+    NotificationDialog.h \
+    ImageDownload.h \
+    Profile.h
 
 RESOURCES += qml.qrc \
     font.qrc \

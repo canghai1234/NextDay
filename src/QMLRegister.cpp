@@ -1,5 +1,4 @@
 #include "QMLRegister.h"
-#include "Backend.h"
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QGuiApplication>
@@ -8,6 +7,8 @@
 void QMLRegister::registerToQML()
 {
     qmlRegisterSingletonType<Backend>("NextDay",0,1,"Backend",backendProvider);
+    qmlRegisterSingletonType<NotificationDialog>("NextDay",0,1,"NotificationDialog",notifyProvider);
+
     Backend::getSingleton()->init();
 
     engine = new QQmlApplicationEngine;

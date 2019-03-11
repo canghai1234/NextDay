@@ -132,6 +132,17 @@ bool ModelManager::dataInited(int index)
     return false;
 }
 
+QString ModelManager::imagePath(int index)
+{
+    Q_D(ModelManager);
+    DateItem* tempItem = static_cast<DateItem*>(d->dateModel->get(index));
+    if(nullptr != tempItem)
+    {
+        return tempItem->imageURL();
+    }
+    return "";
+}
+
 QString ModelManager::musicTitle(int index)
 {
     Q_D(ModelManager);

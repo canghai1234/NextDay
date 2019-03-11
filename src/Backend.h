@@ -8,6 +8,8 @@
 #include "ParsingJson.h"
 #include "DateTime.h"
 #include "common.h"
+#include "ImageDownload.h"
+#include "Profile.h"
 
 #include "DateModel/ModelManager.h"
 
@@ -25,7 +27,15 @@ public:
     }
 
     Q_INVOKABLE void qmlIndexChanged(int currentIndex);
-    Q_INVOKABLE double getFontScale();
+
+    Q_INVOKABLE double getSettingItemHeight();
+
+    Q_INVOKABLE QString getTodayImagePath();
+    Q_INVOKABLE void saveTodayBackgroundImage();
+
+    Q_INVOKABLE double getFontScale(); //根据屏幕获取比例
+    Q_INVOKABLE void setTextScaleUser(int scale); //用户自己调整的比例
+    Q_INVOKABLE int getTextScaleUser();
 
 private:
     void requestSource(QByteArray date);
@@ -45,14 +55,18 @@ private:
     HttpRequest* _http;
     ParsingJson* _parJson;
     DateTime* _date;
+    Profile* _profile;
 
     ModelManager* _todayModelManage;
     ModelManager* _historyModelManage;
 
+    ImageDownload* _download;
     bool _isHistoryModel;
     void initNetworkModel();
 
+    QByteArray _todayDateKey;
     int _currentIndex;
+    QString _rootPath;
 };
 
 #endif // BACKEND_H

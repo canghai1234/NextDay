@@ -3,5 +3,12 @@
         <file>icon/pause.png</file>
         <file>icon/play.png</file>
         <file>icon/stop.png</file>
+        <file>icon/download.png</file>
+        <file>icon/setting.png</file>
+        <file>icon/about.png</file>
+        <file>icon/back.png</file>
+        <file>icon/downImage.png</file>
+        <file>icon/downloadScreen.png</file>
+        <file>icon/icon.png</file>
     </qresource>
 </RCC>

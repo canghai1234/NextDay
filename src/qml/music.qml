@@ -1,9 +1,11 @@
-import QtQuick 2.0
+import QtQuick 2.10
 import QtMultimedia 5.9
 import QtQuick.Controls 2.2
 
 Item {
     id: root
+
+    signal sig_settingShow()
 
     function setMusicURL(url)
     {
@@ -55,8 +57,8 @@ Item {
     property int parentHeight: 2208
     property double progressHeight: 0.00136 * windowHeight
     property double fontScale: 1.0
-    property double musicTextSize: 15 * fontScale
-    property double artistTextSize: 10 * fontScale
+    property double musicTextSize: 14 * fontScale
+    property double artistTextSize: 9 * fontScale
 
     property int iconHeight: root.height * 0.6
     property int progressBottomMargin: root.height * 0.4 * 0.3
@@ -105,6 +107,27 @@ Item {
         }
     }
 
+    Audio {
+        id: playMusic
+        audioRole: Audio.MusicRole
+        autoLoad: false
+        autoPlay: false
+        onPositionChanged: {
+            progress.value = position}
+        onDurationChanged: {
+            progress.visible = true
+            progress.to = duration }
+    }
+
+    MouseArea
+    {
+        anchors.fill: parent
+        pressAndHoldInterval: 2000
+        onPressAndHold: {
+            sig_settingShow()
+        }
+    }
+
     Image {
         id: playStatus
         height: root.iconHeight
@@ -122,13 +145,11 @@ Item {
         }
     }
 
-
     Text {
         id: musicName
         color: "#FFFFFF"
-        verticalAlignment: Text.AlignTop
         textFormat: Text.AutoText
-        font.weight: Font.ExtraLight
+        font.weight: Font.Normal
         font.pointSize: root.musicTextSize
         lineHeightMode: Text.FixedHeight
         lineHeight: font.pixelSize
@@ -138,10 +159,10 @@ Item {
         anchors.left: playStatus.right
         anchors.leftMargin: 0
     }
+
     Text {
         id: musicArtist
         color: "#FFFFFF"
-        verticalAlignment: Text.AlignBottom
         font.weight: Font.ExtraLight
         font.pointSize: root.artistTextSize
         lineHeightMode: Text.FixedHeight
@@ -152,6 +173,7 @@ Item {
         anchors.bottom: playStatus.bottom
         anchors.bottomMargin: 0
     }
+
     ProgressBar {
         id: progress
         from: 0
@@ -186,15 +208,4 @@ Item {
         }
     }
 
-    Audio {
-        id: playMusic
-        audioRole: Audio.MusicRole
-        autoLoad: false
-        autoPlay: false
-        onPositionChanged: {
-            progress.value = position}
-        onDurationChanged: {
-            progress.visible = true
-            progress.to = duration }
-    }
 }
