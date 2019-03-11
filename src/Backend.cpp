@@ -93,7 +93,7 @@ void Backend::slotP_parsingJsonOK(NetworkData &data)
     QString month = _date->getMonthShort(data.dateKey);
     newData.week = QString(month + ". " + week).toUpper();
 
-    if(data.hasEvent)
+    if(data.hasEvent && data.event.size() > 0)
         newData.event = ", " + data.event;
     newData.geoInfo = data.reverse;
 

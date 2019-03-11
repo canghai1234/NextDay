@@ -103,8 +103,11 @@ void ParsingJson::slot_parsingSource(QByteArray jsonData)
 
             //event 信息
             data.event = dayObject.value("event").toString("");
+            data.event = data.event.trimmed();
             if(data.event.size() > 0)
                 data.hasEvent = true;
+            else
+                data.hasEvent = false;
 
             //缩略图
             QJsonObject thumbnail = dayObject.value("thumbnail").toObject();

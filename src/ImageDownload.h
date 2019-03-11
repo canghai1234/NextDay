@@ -11,7 +11,7 @@ class ImageDownload : public QObject
 {
     Q_OBJECT
 public:
-    explicit ImageDownload(QObject *parent = 0);
+    explicit ImageDownload(QObject *parent = nullptr);
     virtual ~ImageDownload();
     void setFile(QString url,QString filePath);
 
